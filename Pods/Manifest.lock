@@ -1,0 +1,34 @@
+PODS:
+  - PryntTrimmerView (4.0.2)
+  - Realm (10.7.6):
+    - Realm/Headers (= 10.7.6)
+  - Realm/Headers (10.7.6)
+  - RealmSwift (10.7.6):
+    - Realm (= 10.7.6)
+  - SteviaLayout (4.7.3)
+  - YPImagePicker (5.0.0):
+    - PryntTrimmerView (= 4.0.2)
+    - SteviaLayout (= 4.7.3)
+
+DEPENDENCIES:
+  - RealmSwift
+  - YPImagePicker
+
+SPEC REPOS:
+  trunk:
+    - PryntTrimmerView
+    - Realm
+    - RealmSwift
+    - SteviaLayout
+    - YPImagePicker
+
+SPEC CHECKSUMS:
+  PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
+  Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
+  RealmSwift: e31c4ddbcc42ac879313d656b86f9ca539f6f4f4
+  SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
+  YPImagePicker: 1463a19a36244e209dcb03c30e63559c5afa9602
+
+PODFILE CHECKSUM: bafd2b507f381f7e2d1bd7095d1a8a39341d0491
+
+COCOAPODS: 1.10.0
