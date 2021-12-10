@@ -12,7 +12,6 @@ class RecipeDetalizationTableViewController: UITableViewController {
     
     let realm = try! Realm()
     var recipe: RecipeObjectModel?
-    let headerID = String(describing: IngredientsHeaderView.self)
     
     var ingredientsCount: Int  = 1
     var stepsCount: Int = 1
@@ -29,13 +28,10 @@ class RecipeDetalizationTableViewController: UITableViewController {
         let header = UITableViewHeaderFooterView()
         switch section {
         case 1:
-            
-            header.textLabel?.text = "Ингредиенты"
-            //header.configure(titleString: "Ингредиенты:")
+            header.textLabel?.text = "Ингредиенты:"
             return header
         case 2:
-            header.textLabel?.text = "Этапы"
-            //header.configure(titleString: "Этапы", isIngredients: false)
+            header.textLabel?.text = "Этапы:"
             return header
         default:
             return nil
@@ -77,9 +73,10 @@ class RecipeDetalizationTableViewController: UITableViewController {
             cell.delegate = self
             return cell
         case 1:///ингредиенты
-            let cell = UITableViewCell()
-            cell.backgroundColor = .blue
-            cell.textLabel?.text = recipe?.ingredients[indexPath.item].name
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ingredientCell", for: indexPath) as! IngredientTableViewCell
+            cell.setCell( ingredient: recipe?.ingredients[indexPath.item])
+            cell.delegate = self
+            //cell.textLabel?.text = "\(indexPath.item). " + (recipe?.ingredients[indexPath.item].name ?? "")
             return cell
         case 2:///этапы
             let cell = UITableViewCell()
@@ -99,6 +96,14 @@ extension RecipeDetalizationTableViewController: FavoriteDelegate {
             recipe.isFavorite = !recipe.isFavorite
         }
     }
-    
-    
+}
+
+extension RecipeDetalizationTableViewController: AddToShoppingListDelegate {
+    func add(ingredient: IngredientObjectModel?) {
+        try! realm.write {
+            if let ingredient = ingredient {
+                ingredient.inShoppinList = !ingredient.inShoppinList
+        }
+        }
+    }
 }

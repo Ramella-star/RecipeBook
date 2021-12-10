@@ -9,6 +9,7 @@ import UIKit
 
 protocol ImagePickerDelegate: class {
     func didTapOnImage()
+    func didEditTextField(name: String)
 }
 
 class RecipeImageTableViewCell: UITableViewCell {
@@ -45,6 +46,12 @@ class RecipeImageTableViewCell: UITableViewCell {
     
     @objc func didTapOnImage() {
         delegate?.didTapOnImage()
+    }
+    
+    func setCell(delegate: ImagePickerDelegate, name: String?, image: UIImage?) {
+        self.delegate = delegate
+        self.tfRecipeName.text = name
+        self.recipeImage.image = image
     }
     
     required init?(coder: NSCoder) {

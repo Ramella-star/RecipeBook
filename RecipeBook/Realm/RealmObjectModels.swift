@@ -24,7 +24,7 @@ class RecipeObjectModel: Object {
     @objc dynamic var name: String = ""
     @objc dynamic var image: Data? = nil
     @objc dynamic var isFavorite: Bool = false
-     dynamic var ingredients: List<IngredintObjectModel> = List<IngredintObjectModel>()
+     dynamic var ingredients: List<IngredientObjectModel> = List<IngredientObjectModel>()
     dynamic var steps: List<String> = List<String>()
     
     override static func primaryKey() -> String? {
@@ -32,10 +32,10 @@ class RecipeObjectModel: Object {
     }
 }
 
-class IngredintObjectModel: Object {
+class IngredientObjectModel: Object {
     @objc dynamic var id: String = ""
     @objc dynamic var name: String = ""
-    @objc dynamic var inProductList: Bool = false
+    @objc dynamic var inShoppinList: Bool = false
     
     override static func primaryKey() -> String? {
         return "id"

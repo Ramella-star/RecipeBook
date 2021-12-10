@@ -78,17 +78,6 @@ class RecipeNameTableViewCell: UITableViewCell {
         delegate?.tapOnFavoriteButton()
     }
     
-    /*func setCell(recipe: RecipeObjectModel?) {
-        recipeName.text = recipe?.name
-        if let data = recipe?.image {
-            recipeImage.image = UIImage(data: data)
-            
-        }
-        let image = (recipe?.isFavorite ?? false) ?  UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
-        favoriteButton.setImage(image, for: .normal)
-        favoriteButton.tintColor = .red
-    }*/
-    
     private func setupViews() {
         addSubview(verticalStackView)
         
@@ -110,13 +99,14 @@ class RecipeNameTableViewCell: UITableViewCell {
     
     private func makeVerticalStackViewConstraints() {
         verticalStackView.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
-        verticalStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        verticalStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        verticalStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
+        verticalStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15).isActive = true
         verticalStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+        horizontalStackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     private func makeFavoriteButtonCOnstraints() {
-        favoriteButton.heightAnchor.constraint(equalTo: recipeName.heightAnchor).isActive = true
+        favoriteButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         favoriteButton.widthAnchor.constraint(equalTo: favoriteButton.heightAnchor).isActive = true
     }
 }

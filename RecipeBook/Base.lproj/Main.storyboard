@@ -60,22 +60,6 @@
             </objects>
             <point key="canvasLocation" x="1631.8840579710147" y="197.54464285714286"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="YVw-kh-f4W">
-            <objects>
-                <viewController id="Wk9-iW-vLc" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="vF7-uL-RdD">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="JFn-No-wJw"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="afs-l9-Hy0"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ujz-wc-DcL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1726.0869565217392" y="926.78571428571422"/>
-        </scene>
         <!--Categories View Controller-->
         <scene sceneID="d7P-I8-LSo">
             <objects>
@@ -204,7 +188,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="1bB-f6-GR2">
                                 <rect key="frame" x="10" y="44" width="394" height="508.5"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cv4-Km-Ffx">
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="list" translatesAutoresizingMaskIntoConstraints="NO" id="cv4-Km-Ffx">
                                         <rect key="frame" x="0.0" y="0.0" width="394" height="394"/>
                                         <color key="backgroundColor" systemColor="systemGray2Color"/>
                                         <gestureRecognizers/>
@@ -335,12 +319,41 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Wk9-iW-vLc" kind="relationship" relationship="rootViewController" id="Efb-eH-kDX"/>
+                        <segue destination="TR9-Kq-mNq" kind="relationship" relationship="rootViewController" id="T6i-ft-MR6"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4M2-mz-nJt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="815.94202898550736" y="926.78571428571422"/>
+        </scene>
+        <!--Shoppin List Table View Controller-->
+        <scene sceneID="Nag-i0-Saj">
+            <objects>
+                <tableViewController id="TR9-Kq-mNq" customClass="ShoppinListTableViewController" customModule="RecipeBook" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="O2v-T0-eAd">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="1UX-vk-eOo">
+                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1UX-vk-eOo" id="XXG-On-5xB">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="TR9-Kq-mNq" id="wtt-9h-Wv9"/>
+                            <outlet property="delegate" destination="TR9-Kq-mNq" id="NkI-7q-Yso"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="CCi-Xy-W1X"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pZ5-fI-HmU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1635" y="927"/>
         </scene>
         <!--Recipe Creation View Controller-->
         <scene sceneID="idL-Nd-fME">
@@ -459,10 +472,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ingredientCell" id="z2c-fB-Cnz" customClass="IngredientTableViewCell" customModule="RecipeBook" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="additionCell" id="Rna-CU-bFm" customClass="AdditionTableViewCell" customModule="RecipeBook" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="71.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z2c-fB-Cnz" id="Kgo-g1-aFR">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rna-CU-bFm" id="xfg-Pc-6fh">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
@@ -503,6 +516,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ingredientCell" id="8JY-sy-edZ" customClass="IngredientTableViewCell" customModule="RecipeBook" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="71.5" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8JY-sy-edZ" id="6vZ-06-Dgb">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="MfF-x0-w14" id="1nM-iw-ZxI"/>
@@ -516,6 +537,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="list" width="128" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
