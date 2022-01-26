@@ -13,29 +13,56 @@ class CategoryCreationViewController: ViewControllerWithKeyboard {
     @IBOutlet weak var categoryImage: UIImageView!
     @IBOutlet weak var tfCategoryName: UITextField!
     
+    var category: CategoryObjectModel?/*{
+        didSet{
+            if let data = category?.imageData {
+                
+                self.categoryImage.image = UIImage(data: data)
+            }
+            self.tfCategoryName.text = category?.name
+        }
+    }*/
+    
+    var image: UIImage?{
+        didSet{
+            self.categoryImage.image = image
+        }
+    }
+    
     let realm = try! Realm()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "Новая категория"
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOnImage))
+        if let category = self.category {
+            if let data = category.imageData {
+                
+                self.categoryImage.image = UIImage(data: data)
+            }
+            self.tfCategoryName.text = category.name
+        }
         categoryImage.addGestureRecognizer(tapGestureRecognizer)
-        
+        categoryImage.layer.cornerRadius = 15
     }
     
     @IBAction func addCategoryBtn(_ sender: Any) {       
         if tfCategoryName.text == "" {
             self.showAlert(title: "", message: "Заполните неоходимые данные")
         } else {
-        try! realm.write {
-            let category = CategoryObjectModel()
-            category.id = UUID().uuidString
-            category.name = tfCategoryName.text
-            let quality : CGFloat = 0.93
-            category.imageData = categoryImage.image?.jpegData(compressionQuality: quality)
-            realm.add(category)
-        }
-        self.navigationController?.popViewController(animated: true)
+            try! realm.write {
+                let category = self.category ?? CategoryObjectModel()
+                ///проверка на существование, т.k. у существующего объекта нельзя менять id
+                if self.category == nil {
+                    category.id = UUID().uuidString
+                }
+                
+                category.name = tfCategoryName.text
+                let quality : CGFloat = 0.93
+                category.imageData = image?.jpegData(compressionQuality: quality)
+                realm.add(category)
+            }
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -47,7 +74,7 @@ class CategoryCreationViewController: ViewControllerWithKeyboard {
             [unowned picker] items, _ in
             
             if let photo = items.singlePhoto {
-                self.categoryImage.image = photo.image
+                self.image = photo.image
             }
             
             picker.dismiss(animated: true, completion: nil)

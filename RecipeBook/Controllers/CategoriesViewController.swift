@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class CategoriesViewController: UIViewController {
+class CategoriesViewController: UIViewController, UINavigationBarDelegate {
     
     let realm = try! Realm()
     var categories: Results<CategoryObjectModel>?
@@ -16,31 +16,42 @@ class CategoriesViewController: UIViewController {
     
     //lazy var categories: Results<CategoryObjectModel> = { self.realm.objects(CategoryObjectModel) }()
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var emptyLabel: UILabel!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: categorieCellId)
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.estimatedItemSize = .zero
         self.navigationItem.title = "Категории"
+        //self.navigationController?.navigationBar.delegate = self
         self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addCategory))
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
          categories =  realm.objects(CategoryObjectModel.self)
+        emptyLabel.isHidden = !(categories?.count == 0 || categories == nil)
         collectionView.reloadData()
     }
     
     @objc private func addCategory() {
-        guard let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "categoryCreation") as? CategoryCreationViewController else { return }
-        self.navigationController?.pushViewController(vc, animated: true)
+        editCategory(category: nil)
     }
     
     private func deleteCategory(category: CategoryObjectModel) {
         try! realm.write {
             realm.delete(category)
         }
-        collectionView.reloadData()
+        //collectionView.reloadData()
+        viewWillAppear(false)
+    }
+    
+    private func editCategory(category: CategoryObjectModel?) {
+        guard let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "categoryCreation") as? CategoryCreationViewController else { return }
+        vc.category = category
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -52,14 +63,13 @@ extension CategoriesViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: categorieCellId, for: indexPath) as! CategoryCollectionViewCell
         let category = categories?[indexPath.item]
-        cell.setCell(title: category?.name ?? "", data: category?.imageData)
-        cell.backgroundColor = .red
+        cell.setCell(title: category?.name ?? "", count: category?.recipes.count, data: category?.imageData)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = (collectionView.frame.width / 2) - 5
-        return CGSize(width: cellWidth, height: cellWidth)
+        let cellWidth = collectionView.frame.width - 20
+        return CGSize(width: cellWidth, height: 80)
     }
     
     
@@ -79,6 +89,11 @@ extension CategoriesViewController: UICollectionViewDelegate, UICollectionViewDa
                     UIAction(title: "Удалить") { _ in
                         if let category = self.categories?[indexPath.item]{
                             self.deleteCategory(category: category)
+                        }
+                    },
+                    UIAction(title: "Изменить") { _ in
+                        if let category = self.categories?[indexPath.item]{
+                            self.editCategory(category: category)
                         }
                     }
                 ])

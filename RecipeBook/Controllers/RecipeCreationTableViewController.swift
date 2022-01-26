@@ -13,14 +13,26 @@ class RecipeCreationTableViewController: UITableViewController {
     
     let realm = try! Realm()
     var category: CategoryObjectModel?
+    
     var ingredients: [IngredientObjectModel] = []
     var steps: [String] = []
+    var recipe: RecipeObjectModel?{
+        didSet{
+            recipeName = recipe?.name ?? ""
+            ingredients = Array(recipe?.ingredients ?? List())
+            steps = Array(recipe?.steps ?? List())
+            if let data = recipe?.image {
+                recipeImage = UIImage(data: data)
+            }
+        }
+    }
     var recipeImage: UIImage?
     var recipeName: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Добавление рецепта"
+        //self.ingredients = Array(recipe?.ingredients ?? List())
+        self.navigationItem.title = recipe != nil ? "Изменение рецепта" : "Добавление рецепта"
         tableView.tableFooterView = UIView()
     }
 
@@ -76,7 +88,6 @@ class RecipeCreationTableViewController: UITableViewController {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "recipeImageCell", for: indexPath) as! RecipeImageTableViewCell
             cell.setCell(delegate: self, name: recipeName, image: recipeImage)
-            cell.tfRecipeName.delegate = self
             return cell
         case 1:
             switch indexPath.item {
@@ -104,6 +115,8 @@ class RecipeCreationTableViewController: UITableViewController {
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: "addButtonCell", for: indexPath) as! AddButtonTableViewCell
             cell.delegate = self
+            let title = recipe == nil ? "Добавить" : "Сохранить"
+            cell.addButton.setTitle(title, for: .normal)
             return cell
         default:
             let cell = UITableViewCell()
@@ -134,8 +147,20 @@ class RecipeCreationTableViewController: UITableViewController {
             return configuration
         }
         switch indexPath.section{
-        case 1, 2:
-            return deleteCell()
+        case 1:
+            switch indexPath.row {
+            case ingredients.count:
+                return nil
+            default:
+                return deleteCell()
+            }
+        case 2:
+            switch indexPath.row {
+            case steps.count:
+                return nil
+            default:
+                return deleteCell()
+            }
         default:
             return nil
         }
@@ -166,7 +191,12 @@ class RecipeCreationTableViewController: UITableViewController {
 }
 
 extension RecipeCreationTableViewController: AdditionCellProtocol {
+    
     func add(cellType: AdditionCellType, value: String) {
+        if value.isEmpty{
+            self.showAlert(title: "Ошибка", message: "Не заполнено значение")
+            return
+        }
         switch cellType {
         case .ingredient:
             let ingredient = IngredientObjectModel()
@@ -188,7 +218,12 @@ extension RecipeCreationTableViewController: AddButtonProtocol {
         try! realm.write {
             if let recipe = getData() {
                 realm.add(recipe)
-                category?.recipes.append(recipe)
+                
+                if let index = category?.recipes.firstIndex(where: {$0.id == recipe.id}) {
+                    category?.recipes[index] = recipe
+                } else {
+                    category?.recipes.append(recipe)
+                }
             }
             
         }
@@ -197,10 +232,28 @@ extension RecipeCreationTableViewController: AddButtonProtocol {
     
     private func getData() -> RecipeObjectModel? {
         let quality : CGFloat = 0.93
-        let recipe = RecipeObjectModel()
-        recipe.id = UUID().uuidString
+        if recipeName.isEmpty{
+            self.showAlert(title: "Ошибка", message: "Заполните название рецепта")
+            return nil
+        }
+        if ingredients.count == 0{
+            self.showAlert(title: "Ошибка", message: "Добавте ингредиент")
+            return nil
+        }
+        if steps.count == 0 {
+            self.showAlert(title: "Ошибка", message: "Добавте этап")
+            return nil
+        }
+        let recipe = self.recipe ?? RecipeObjectModel()
+        
+        if self.recipe == nil {
+            recipe.id = UUID().uuidString
+        }
+        
         recipe.name = recipeName
         recipe.image = recipeImage?.jpegData(compressionQuality: quality)
+        recipe.ingredients.removeAll()
+        recipe.steps.removeAll()
         recipe.ingredients.append(objectsIn: ingredients)
         recipe.steps.append(objectsIn: steps)
         
@@ -212,6 +265,7 @@ extension RecipeCreationTableViewController: ImagePickerDelegate {
     func didEditTextField(name: String) {
         recipeName = name
     }
+    
     
     func didTapOnImage() {
         let configuration = getImagePickerConfiguration(screen: .library)
@@ -228,11 +282,5 @@ extension RecipeCreationTableViewController: ImagePickerDelegate {
             picker.dismiss(animated: true, completion: nil)
         }
         present(picker, animated: true, completion: nil)
-    }
-}
-
-extension RecipeCreationTableViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        self.recipeName = textField.text ?? ""
     }
 }

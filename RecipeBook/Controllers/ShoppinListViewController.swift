@@ -8,8 +8,10 @@
 import UIKit
 import RealmSwift
 
-class ShoppinListTableViewController: UITableViewController {
+class ShoppinListViewController: UIViewController {
     
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var emptyLabel: UILabel!
     let realm = try! Realm()
     var ingredients: Results<IngredientObjectModel>?
 
@@ -21,20 +23,23 @@ class ShoppinListTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         ingredients =  realm.objects(IngredientObjectModel.self).filter("inShoppinList = true")
+        emptyLabel.isHidden = !(ingredients?.count == 0 || ingredients == nil)
         tableView.reloadData()
     }
+}
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension ShoppinListViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ingredients?.count ?? 0
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        let cell = UITableViewCell()
         cell.textLabel?.text = ingredients?[indexPath.item].name
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
        
             let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completionHandler in
@@ -42,7 +47,7 @@ class ShoppinListTableViewController: UITableViewController {
                     guard let ingredient = self.ingredients?[indexPath.item] else { return }
                     ingredient.inShoppinList = false
                 }
-                tableView.reloadData()
+                self.viewWillAppear(false)
                 completionHandler(true)
             }
             deleteAction.backgroundColor = .red
@@ -50,5 +55,4 @@ class ShoppinListTableViewController: UITableViewController {
             configuration.performsFirstActionWithFullSwipe = false
             return configuration
     }
-    
 }

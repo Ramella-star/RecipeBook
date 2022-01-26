@@ -25,8 +25,13 @@ class RecipeImageTableViewCell: UITableViewCell {
     
     let recipeImage: UIImageView = {
         let img = UIImageView()
-        img.backgroundColor = .gray
+        img.backgroundColor = .systemGray2
         img.isUserInteractionEnabled = true
+        img.image = UIImage(systemName: "photo")
+        img.tintColor = .white
+        img.layer.cornerRadius = 15
+        img.clipsToBounds = true
+        img.contentMode = .scaleAspectFit
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
@@ -41,6 +46,8 @@ class RecipeImageTableViewCell: UITableViewCell {
     let tfRecipeName: UITextField = {
        let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
+         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         return textField
     }()
     
@@ -51,7 +58,9 @@ class RecipeImageTableViewCell: UITableViewCell {
     func setCell(delegate: ImagePickerDelegate, name: String?, image: UIImage?) {
         self.delegate = delegate
         self.tfRecipeName.text = name
-        self.recipeImage.image = image
+        if let img = image {
+            self.recipeImage.image = img
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -60,11 +69,16 @@ class RecipeImageTableViewCell: UITableViewCell {
         setupViews()
     }
     
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        delegate?.didEditTextField(name: textField.text ?? "")
+    }
+    
     private func setupViews() {
         addSubview(verticalStackView)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOnImage))
         recipeImage.addGestureRecognizer(tapGestureRecognizer)
+        tfRecipeName.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
 
         verticalStackView.addArrangedSubview(recipeImage)
         verticalStackView.addArrangedSubview(recipeName)

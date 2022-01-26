@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Книга Рецептов</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,6 +22,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Это приложение хочет сохранить фотографии и видео в вашу библиотеку</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Приложениее запрашивает доступ к галерее</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -62,9 +68,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Приложениее запрашивает доступ к галерее</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Это приложение хочет сохранить фотографии и видео в вашу библиотеку</string>
 </dict>
 </plist>

@@ -51,6 +51,11 @@ class RecipeNameTableViewCell: UITableViewCell {
     let recipeImage: UIImageView = {
         let img = UIImageView()
         img.backgroundColor = .gray
+        img.layer.cornerRadius = 15
+        img.tintColor = .white
+        img.clipsToBounds = true
+        img.backgroundColor = .systemGray2
+        img.contentMode = .scaleAspectFit
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()

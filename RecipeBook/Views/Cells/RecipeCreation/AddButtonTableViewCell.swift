@@ -17,9 +17,9 @@ class AddButtonTableViewCell: UITableViewCell {
     
     let addButton: UIButton = {
        let btn = UIButton()
-        btn.setTitle("Добавить", for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.backgroundColor = .blue
+        btn.backgroundColor = .orange
+        btn.setTitleColor(.white, for: .normal)
         btn.isUserInteractionEnabled = true
         return btn
     }()
@@ -41,8 +41,10 @@ class AddButtonTableViewCell: UITableViewCell {
     }
     
     private func makeAddButtonConstraints() {
-        addButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        addButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        addButton.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        addButton.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        addButton.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        addButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
 
 }

@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "cropped-Кулинария-главная.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "cropped-Кулинария-главная-1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "cropped-Кулинария-главная-2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
